@@ -1,0 +1,252 @@
+#+TITLE: 交换机配置6——生成树协议（STP）
+#+DATE: <2017-03-22 周三>
+#+TAGS: STP, switch, loop
+#+LAYOUT: post
+#+CATEGORIES: Switch
+
+[[https://github.com/aoenian/cisco-pkt][配置好的pkt文件]]
+
+*网络的拓扑结构以及配置参考 《网络设置配置与管理》 吴伯桥主编 清华大学出版社*
+/书中部分配置命令在模拟器中并不存在，下文中已更改/
+
+拓扑图：
+[[http://i4.buimg.com/567571/15c08dbe3daed576.png]]
+
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
+
+* 生成树的理解
+
+- [[https://www.zhihu.com/question/21327750][如何理解STP生成树协议]]
+- [[http://network.51cto.com/art/201204/327761_all.htm][交换机配置教程 生成树协议STP防止环路]]
+- [[https://www.zhihu.com/question/48888794][如何记住网络工程中的技术，如STP，HSRP等]]
+
+* 生成树配置
+
+
+
+*因为思科交换机默认启用生成树协议，所以连接后会自行处理环路问题。不过由于默认的根网桥可能不是我们想要的，这个时候就需要进行手动设置。*
+
+由拓扑图可知：网络连接后默认S1交换机并不是根网桥，与需求不符。
+
+** 基本的STP命令
+
+拓扑图：
+[[http://i2.muimg.com/567571/974b1cbf4d045048.png]]
+
+#+BEGIN_SRC C
+// 查看S4的STP
+S4#show spanning-tree 
+VLAN0001
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    32769
+             Address     0003.E44D.6117		// 根交换机的MAC地址
+             Cost        19
+             Port        1(FastEthernet0/1)
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32769  (priority 32768 sys-id-ext 1)
+             Address     00E0.F7B9.E182		// S4的地址（可见S4不是根网桥）
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  20
+
+Interface        Role Sts Cost      Prio.Nbr Type
+---------------- ---- --- --------- -------- --------------------------------
+Fa0/2            Altn BLK 19        128.2    P2p
+Fa0/1            Root FWD 19        128.1    P2p
+
+// 在此例中S5为根网桥，所以它的两个端口都为转发状态，S4的两个端口开销一样都是19
+// 默认端口开销，所以将使用最低的端口号为根端口
+
+// 更改S4的Fa0/2端口为Root端口，思科PT不支持cost命令
+// 所以课本以及网络上的操作基本都废了
+// 要更改S4的Root端口，需要在S5上面设置相应的端口的优先级，所以下面的设置在S5上进行
+
+S5#show spanning-tree 	// 查看得知Fa0/2端口优先级为128
+Interface        Role Sts Cost      Prio.Nbr Type
+---------------- ---- --- --------- -------- --------------------------------
+Fa0/2            Desg LRN 19        128.2    P2p
+S5#configure 
+Configuring from terminal, memory, or network [terminal]? 
+Enter configuration commands, one per line.  End with CNTL/Z.
+S5(config)#interface f0/2
+S5(config-if)#spanning-tree vlan 1 port-priority 48	// 更改为小于128的
+// 注意必须是16的倍数，然后查看S4的状态
+
+S4#show spanning-tree 
+Interface        Role Sts Cost      Prio.Nbr Type
+---------------- ---- --- --------- -------- --------------------------------
+Fa0/2            Root FWD 19        128.2    P2p	// 角色改变为Root
+Fa0/1            Altn BLK 19        128.1    P2p
+
+// 更改S4为根网桥
+S4#configure 
+S4(config)#spanning-tree vlan 1 root primary 
+S4#show spanning-tree 
+VLAN0001
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    24577		// 优先级更改
+             Address     00E0.F7B9.E182
+             This bridge is the root
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    24577  (priority 24576 sys-id-ext 1)
+             Address     00E0.F7B9.E182
+             Hello Time  2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  20
+
+Interface        Role Sts Cost      Prio.Nbr Type
+---------------- ---- --- --------- -------- --------------------------------
+Fa0/2            Desg FWD 19        128.2    P2p
+Fa0/1            Desg FWD 19        128.1    P2p
+
+// 可以试试再用相同的命令把S5改回到root
+
+#+END_SRC
+
+*上面的配置参考自[[https://learningnetwork.cisco.com/thread/56698][spanning tree port priority and cost command]]. 不过奇怪的是网络上的回答给出的结果不仅端口Fa0/2为Root，而且它的优先级也改变了。而我在操作的过程中，只出现了第一个现象，优先级还是128，当然根网桥的Fa0/2端口的优先级肯定变为48.*
+
+** 详细的配置
+
+*** VLAN配置
+
+
+#+BEGIN_SRC C
+Switch>enable 
+Switch#
+Switch#configure 
+Switch(config)#hostname S1
+S1(config)#exit
+S1#vlan data
+S1(vlan)#vtp transparent 	// VTP透明模式
+S1(vlan)#vlan 8
+S1(vlan)#vlan 10
+S1(vlan)#vlan 11
+S1(vlan)#exit
+APPLY completed.
+Exiting....
+S1#show vlan
+// S2 S3 的配置与S1完全相同此处省略
+
+#+END_SRC
+
+*VTP透明模式设置后 交换机不通告自己的vlan信息，也不同步外部vlan，可以修改创建vlan*
+
+可以参考：[[http://blog.sina.com.cn/s/blog_71851c8b0101dlzg.html][VTP的透明模式vtp mode transparent的作用]]
+
+*** STP设置
+
+#+BEGIN_SRC C
+S1(config)#spanning-tree vlan 1-4094 priority 0	// S1设置为根网桥
+
+S2(config)#spanning-tree vlan 1-4094 priority 4096 // S2设置为备用根网桥
+
+#+END_SRC
+
+*** 交换机之间的Trunk链路配置
+
+#+BEGIN_SRC C
+// S1的端口配置
+S1(config)#interface range f0/1-2
+S1(config-if-range)#switchport trunk encapsulation dot1q 
+S1(config-if-range)#swi mode trunk
+S1(config-if-range)#swit trunk allowed vlan all
+S1#show interface trunk		// 查看端口状态
+
+// S2的端口配置
+S2(config)#inter range f0/1-2
+S2(config-if-range)#swit trunk encapsulation dot1q 
+S2(config-if-range)#swit mode trunk	// 如果先设置trunk模式则会出错
+S2(config-if-range)#swi trunk all vlan all
+
+// S3的端口配置
+S3>enable 
+S3#confi t
+Enter configuration commands, one per line.  End with CNTL/Z.
+S3(config)#inter r f0/1-2
+S3(config-if-range)#swi mode trunk	// 二层交换机没有802.1q的设置
+S3(config-if-range)#swi trunk all vlan all
+
+#+END_SRC
+
+*** S3的Access接口配置
+
+#+BEGIN_SRC C
+S3(config)#int f0/10
+S3(config-if)#swi mode access	// 端口设置为接入模式
+S3(config-if)#swi access vlan 10	// 端口加入vlan10
+S3(config-if)#spanning-tree portfast 	// 端口配置为portfast端口
+S3(config-if)#exit
+S3(config)#int f0/11
+S3(config-if)#swi mode access
+S3(config-if)#swi acc vlan 11
+S3(config-if)#span por
+
+S3#show vlan
+
+#+END_SRC
+
+[[http://baike.baidu.com/item/%E8%BE%B9%E7%BC%98%E7%AB%AF%E5%8F%A3][PortFast端口]]
+加快终端主机连接入stp网络的收敛.只适用于,在交换机与主机(电脑)相连的端口,不应该在交换机与交换机,路由器,hub互连的网络设备的端口使用.
+
+*** 网管地址设置
+
+#+BEGIN_SRC C
+// S2管理IP设置
+S2(config)#inter vlan 8		// 进入vlan8设置
+S2(config-if)#ip address 192.168.8.130 255.255.255.128
+S2(config-if)#no shut	
+S2(config-if)#exit
+S2(config)#ip default-gateway 192.168.8.129
+S2(config)#exit
+S2#show ip interface brief 
+
+// S3管理IP设置
+S3#configure
+S3(config)#inter vlan 8
+S3(config-if)#ip add 192.168.8.131 255.255.255.128
+S3(config-if)#no shut
+S3(config-if)#exit
+S3(config)#ip default-g 192.168.8.129
+S3(config)#exit
+S3#show ip int b
+
+#+END_SRC
+
+*** 三层接口配置
+
+#+BEGIN_SRC C
+S1#conf
+S1(config)#ip routing
+S1(config)#int vlan 8
+S1(config-if)#ip add 192.168.8.129 255.255.255.128
+S1(config-if)#no shut
+S1(config-if)#exit
+S1(config)#int vlan 10
+S1(config-if)#ip add 192.168.10.1 255.255.255.0
+S1(config-if)#no shut
+S1(config-if)#exit
+S1(config)#int vlan 11
+S1(config-if)#ip add 192.168.11.1 255.255.255.0
+S1(config-if)#no shut
+S1(config-if)#exit
+S1(config)#exit
+S1#show ip int b
+
+#+END_SRC
+
+** 测试
+
+1. PC1和PC2之间可以通信
+2. 在PC1上用 =ping -t 192.168.11.100= 向PC2发包
+   在PC2上用 =ping -t 192.168.10.100= 向PC1发包
+   将S3的Fa0/1端口 =shutdown= 以后查看 STP信息和PC丢包情况
+   将S3的Fa0/1端口 =no shutdown= 后查看同样信息
+
+** 拓展阅读
+
++ [[http://blog.sina.com.cn/s/blog_635e1a9e01010j89.html][STP基本配置]]
++ [[http://packetlife.net/blog/2008/sep/5/spanning-tree-port-costs/][Spanning tree port costs]]
++ [[http://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst4000/8-2glx/configuration/guide/spantree.html][Configuring Spanning Tree]]
+

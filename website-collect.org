@@ -1,0 +1,63 @@
+#+TITLE: 一些好的网站备份
+#+DATE: <2017-04-29 Sat>
+#+TAGS: website, collection
+#+LAYOUT: post
+#+CATEGORIES: WWW
+
+这段时间整理了一下浏览器的书签发现里面收藏了很多书签，然后重新整理了一下，把一些感觉不错的记录下来，然后把浏览器里面的都删除掉。其实平时浏览的网站基本就那几个。
+
+按照网站的内容分类吧，比较直观。 /站点后有 =@= 符号表示需要特殊渠道访问/
+
+* 软件下载
+
++ [[http://www.itmop.com/][IT猫扑网]]    这个是无意间看到的感觉比较全就留下来了
++ [[http://www.xdowns.com/][绿盟]]    强力推荐这个良心软件网站。基本除了软件的官网，就在这里下载
++ [[https://emlvirus.gitbooks.io/windows-apps-that-amaze-us/content/][Windows绝赞应用]]    介绍Windows绝妙应用的项目，同时也介绍一些流氓应用
++ [[http://www.zdfans.com/][zd423]]    良心软件下载站
+
+
+* 个人博客
+
++ [[https://doub.bid/][逗比根据地]] 国内站    [[https://doub.io/][逗比根据地]] =@= 
++ [[https://www.bennythink.com/][土豆不好吃]]
++ [[http://www.blogfuntw.com/][跟著工作熊玩賺部落格]]
+
+
+* 伟大航路
+
++ [[http://freess.org/index.html#][freess]]
++ [[https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7][freess]]
++ [[https://v2mm.tech/tags/%E6%A2%AF%E5%AD%90%E6%9C%A8%E6%96%99%E9%9B%86][木料集]]
++ [[https://wsgzao.github.io/post/fq/][小结]]  =@=
+
+
+* 教程
+
++ [[http://book.emacs-china.org/#orgheadline2][Emacs教程]]    子龙山人的 =Emacs= 教程
++ [[http://igit.linuxtoy.org/contents.html][沉浸式学Git]]    Git教程，很简短
++ [[https://github.com/Yixiaohan/codeparkshare][python初学者资料推荐]]
++ [[https://learnxinyminutes.com/][Learn X in Y minutes]]    Take a whirlwind tour of your next favorite language
++ [[http://zihua.com.cn/][自化]]     类似网易云课堂，不过全是设计类的
+
+
+* 其他类网站
+
+** 资讯类
++ [[https://linuxtoy.org/][LINUXTOY]]    就是上面 =Git= 教程所在的网站，关于linux的
++ [[http://www.mac52ipod.cn/][苹果fans博客]]
++ [[http://www.jintiankansha.me/][今天看啥]]    微信公众号文章查看，我喜欢的都有，主要更新比较及时
+
+** 工具类 
++ [[http://www.clipconverter.cc/][ytb视频下载]]
++ [[http://pythontutor.com/visualize.html#mode=edit][pythontutor]]    可视化执行程序，支持 =python java ruby= 等语言
++ [[http://validator.w3.org/][W3C validators]]    检验网页代码是否标准
+
+** 娱乐类
++ [[http://www.fixsub.com/][FIX字幕侠]]    美剧
++ [[http://www.beautifulchemistry.net/home-cn][美丽化学]]    挺不错，不过感觉更新的不多
+
+** 不知道哪一类
++ [[https://zhuanlan.zhihu.com/p/19885746?columnSlug=zhinet][知乎万赞答案汇总以及排名]]
++ [[https://aixyz.com/][DNS服务器]]    应对一下DNS污染、劫持之类
++ [[https://baidns.cn/][BAI DNS]]    试过几个dns，这个还是比较块，114就算了，小广告整得也是顺溜
+
