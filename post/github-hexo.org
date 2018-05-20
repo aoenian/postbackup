@@ -1,0 +1,151 @@
+#+TITLE: Github和Hexo建站过程
+#+DATE: <2018-05-06 Sun>
+#+TAGS: github, hexo, pages, blog
+#+LAYOUT: post
+#+CATEGORIES: Hexo
+
+
+重装系统后第二次配置 pages，换了主题，又重新整理了配置过程，供以后参考。
+
+* 环境配置
+
+** 需要安装的软件
+- brew
+- nodejs
+- git
+- hexo
+
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
+
+** 安装方法
+
+/建议查看官方网站获取最新的安装建议,这里只记录Mac系统（版本10.13.4）的方法/
+
+- [[https://brew.sh/index_zh-cn][brew]]    Mac系统下的包管理器
+  #+BEGIN_SRC Shell
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"  
+  #+END_SRC
+- [[https://nodejs.org/en/][nodejs]]
+  ~brew install node~
+- [[https://git-scm.com/][git]]
+  ~brew install git~
+- [[https://hexo.io/zh-cn/docs/index.html][hexo]]
+  ~npm install -g hexo-cli~
+
+* hexo建站
+
+参考官方文档 [[https://hexo.io/zh-cn/docs/setup.html][建站]]
+
+方法如下：
+
+#+BEGIN_SRC Shell
+$ mkdir ghblog
+$ hexo init ghblog
+$ cd ghblog
+$ npm install
+$ hexo s    # 启动服务器
+#+END_SRC
+
+访问 http://localhost:4000/ 若出现 Hexo 的博客则建站成功。
+
+* 网站配置
+
+** 站点配置
+
+站点配置请参考官方文档和主题文档 [[https://hexo.io/zh-cn/docs/configuration.html][配置]]
+
+#注意：配置文件中配置项目的 ~:~ 后要空一格#
+
+** Github部署
+
+参考[[http://gonghonglou.com/2016/02/03/firstblog/#comments][Mac上搭建基于GitHub的Hexo博客]]
+
+修改站点配置文件中的 =deploy= 选项中内容，具体如下：
+
+#+BEGIN_SRC 
+deploy:
+  type: git
+  repository: https://github.com/aoenian/aoenian.github.io.git
+  branch: master
+#+END_SRC
+
+/如部署时出错，可查看 [[https://hexo.io/zh-cn/docs/deployment.html][部署]] 文档，安装 hexo-deployer-git
+
+=npm install hexo-deployer-git --save=
+
+** 安装theme
+
+这次我使用的主题是 [[https://github.com/Vevlins/hexo-theme-toki][toki]]
+
+*** 安装主题
+
+#+BEGIN_SRC Shell
+cd ghblog/themes    # 进入主题目录
+git clone git@github.com:Vevlins/hexo-theme-toki.git    # 克隆主题
+npm i -S hexo-generator-json-content    # 安装 hexo-generator-json-content
+
+#+END_SRC
+
+*** 修改站点配置文件
+
+#+BEGIN_SRC Shell
+# 关闭hexo自带代码高亮
+highlight:
+    enable: false
+
+# 更换主题
+theme: hexo-theme-toki
+
+# 更换url
+url: https://aoenian.github.io/
+
+# 增加 jsonContent配置
+jsonContent:
+    meta: false
+    pages: false
+    posts:
+        title: true
+        date: true
+        path: true
+        text: true
+        raw: false
+        content: false
+        slug: false
+        updated: false
+        comments: false
+        link: false
+        permalink: false
+        excerpt: false
+        categories: false
+        tags: false
+
+#+END_SRC
+
+*** 替换主题内图片
+
+根据需要替换主题内的图片 
+
+存放图片的地址为 =themes/hexo-theme-toki/source/img/=
+
+*** 建立about页面
+
+#+BEGIN_SRC Shell
+hexo new page about    # 建立about页面连接
+# 修改about中 index.md 中 layout:about 即可显示 
+# 分类页面和标签页面可按照相同的方法处理
+#+END_SRC
+
+*** 主题配置
+
+根据主题 [[https://github.com/Vevlins/hexo-theme-toki][文档]] 及自身需求配置
+
+** 生成部署
+
+直接执行 =hexo d= 即可部署网站，中间需要用户名和密码
+
+
+
+
+

@@ -1,0 +1,47 @@
+#+TITLE: 加快国内访问Github速度
+#+DATE: <2018-05-12 Sat>
+#+TAGS: github, fast
+#+LAYOUT: post
+#+CATEGORIES: Github
+
+
+有时候查看一些开源的项目和代码都会访问Github，自己的博客也在Page上，不过访问总是比较慢，原因不用说大家都知道，不过幸亏是还能访问，所以感觉已经挺知足了。
+
+但是慢点没关系，你不能最后样式都加载不出来吧，这有点过分了，所以搜索了一下解决方法，确实挺有效，记录如下。
+
+方法简单说就是在本地 =hosts= 文件中加入 =github.com= 的网站IP，绕过DNS解析。
+
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
+
+具体的操作如下：
+
+1. 打开查询域名映射的网站： [[http://tool.chinaz.com/dns/]] （国内的）  [[https://www.ipaddress.com/]]  （国外的）
+2. 查询下列域名的IP，多试几次，选择稳定的、延迟小的，然后记下IP地址
+   - =github.com=
+   - =github.global.ssl.fastly.net=
+   - =assets-cdn.github.com=
+3. 然后把查询到的IP和相应的域名按照格式写入到系统的 =hosts= 文件中后保存
+   | 系统    | hosts文件位置                         |
+   |---------+---------------------------------------|
+   | Windows | C:\Windows\System32\drivers\etc\hosts |
+   | Linux   | /etc/hosts                            |
+   | MacOS   | /etc/hosts                            |
+4. 刷新DNS
+   通用的方法：重启机器或者禁用重连网络
+
+   如果使用命令的话，具体如下：
+   | 系统                         | 刷新DNS命令                           |
+   |------------------------------+---------------------------------------|
+   | Windows                      | =ipconfig /flushdns=                  |
+   | Ubuntu                       | =sudo /etc/init.d/networking restart= |
+   | OS X v10.10.4 or later       | =sudo killall -HUP mDNSResponder=     |
+   | OS X v10.10 through v10.10.3 | =sudo discoveryutil mdnsflushcache=   |
+
+   至于OS X的其他版本可参考官方网站： [[https://support.apple.com/en-us/HT202516][Reset the DNS cache in OS X]]
+5. 使用浏览器访问Github检验你的成果
+
+*参考博客*
+- [[https://blog.csdn.net/sunsteam/article/details/63253933][Github访问慢解决办法]]
+- [[https://www.jianshu.com/p/40d48340a6b2][解决github访问慢方案]]
