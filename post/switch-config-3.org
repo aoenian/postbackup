@@ -7,8 +7,7 @@
 配置好的思科模拟器文件地址：[[https://github.com/aoenian/cisco-pkt/][cisco-pkt]]
 
 拓扑图
-
-[[http://p1.bpimg.com/567571/0714c1e4dc533192.png]]
+[[https://raw.githubusercontent.com/aoenian/postbackup/master/topupic/switch3.PNG]]
 
 #+BEGIN_HTML
 <!--more-->

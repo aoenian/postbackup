@@ -15,6 +15,9 @@
 + [[https://emlvirus.gitbooks.io/windows-apps-that-amaze-us/content/][Windows绝赞应用]]    介绍Windows绝妙应用的项目，同时也介绍一些流氓应用
 + [[http://www.zdfans.com/][zd423]]    良心软件下载站
 
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
 
 * 个人博客
 

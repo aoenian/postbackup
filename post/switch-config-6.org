@@ -10,7 +10,7 @@
 /书中部分配置命令在模拟器中并不存在，下文中已更改/
 
 拓扑图：
-[[http://i4.buimg.com/567571/15c08dbe3daed576.png]]
+[[https://raw.githubusercontent.com/aoenian/postbackup/master/topupic/switch6.PNG]]
 
 #+BEGIN_HTML
 <!--more-->
@@ -33,7 +33,7 @@
 ** 基本的STP命令
 
 拓扑图：
-[[http://i2.muimg.com/567571/974b1cbf4d045048.png]]
+[[https://raw.githubusercontent.com/aoenian/postbackup/master/topupic/switch6-1.PNG]]
 
 #+BEGIN_SRC C
 // 查看S4的STP

@@ -21,8 +21,11 @@
 [root@centos-rpi3 shc]# ./configure
 [root@centos-rpi3 shc]# make
 [root@centos-rpi3 shc]# make install
-
 #+END_SRC
+
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
 
 ** 测试环境配置
 
@@ -47,7 +50,7 @@
 /个人理解：可能执行rmfile程序的时候是aoenian用户，但是rmfile程序调用rm命令的时候就变回来了/
 
 
-** 测试方法2（成功）
+* 测试方法2（成功）
 
 思路：不使用系统命令，使用C语言编写二进制文件
 

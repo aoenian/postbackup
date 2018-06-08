@@ -13,7 +13,7 @@
 #+END_HTML
 
 拓扑图：
-[[http://i4.buimg.com/567571/36c26c7adffe3ce0.png]]
+[[https://raw.githubusercontent.com/aoenian/postbackup/master/topupic/router2.png]]
 
 * 交换机S0配置
 

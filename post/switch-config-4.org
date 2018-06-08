@@ -9,8 +9,7 @@
 *PT5.3这个大坑我上来就踩上了，这个版本的链路聚合有问题，当只有一条链路的时候，无法ping通。所以直觉就是链路聚合没有配置成功。请用6.2版本。*
 
 拓扑图如下：
-
-[[http://p1.bqimg.com/567571/05c407df35ae45f7.png]]
+[[https://raw.githubusercontent.com/aoenian/postbackup/master/topupic/switch4.png]]
 
 #+BEGIN_HTML
 <!--more-->

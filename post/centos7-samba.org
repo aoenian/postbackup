@@ -15,6 +15,12 @@
 
 那么需求来了，让CentOS读取ntfs，搜索一番，发现很简单就是安装一个ntfs-3g的软件的事情，不过就这么个问题废老大劲了。
 
+*2018-06-05更新：安装ntfs-3g可[[https://www.tuxera.com/community/open-source-ntfs-3g/][官网]]下载源码直接编译安装*
+
+#+BEGIN_HTML
+<!--more-->
+#+END_HTML
+
 ** 安装ntfs-3g
 
 首先需要安装epel，至于epel是个什么货色请看[[https://fedoraproject.org/wiki/EPEL/zh-cn][EPEL]]. /结果悲惨的失败了/
@@ -25,10 +31,10 @@
 
 - 软件包安装
 
-#+BEGIN_SRC Sh
+#+BEGIN_SRC sh
 ## RHEL/CentOS 7 64-Bit ##
-# wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-10.noarch.rpm
-# rpm -ivh epel-release-7-10.noarch.rpm
+wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-10.noarch.rpm
+rpm -ivh epel-release-7-10.noarch.rpm
 
 #+END_SRC
 
@@ -36,7 +42,7 @@
 
 - 查看CentOS的版本
 
-#+BEGIN_SRC Sh
+#+BEGIN_SRC sh
 [root@CentOS-rpi3 aoenian]# cat /proc/version
 Linux version 4.9.50-v7.1.el7 (mockbuild@armv7-03.dev.CentOS.org) (gcc version 4.8.5 20150623 (Red Hat 4.8.5-16) (GCC) ) #1 SMP Thu Sep 14 08:17:16 UTC 2017
 
@@ -61,19 +67,19 @@ CentOS Linux release 7.4.1708 (Core)
 
 - 不能放弃，安装CentOS6的32位epel
 
-#+BEGIN_SRC Sh
+#+BEGIN_SRC sh
 ## RHEL/CentOS 6 32-Bit ##
-# wget http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
-# rpm -ivh epel-release-6-8.noarch.rpm
+wget http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+rpm -ivh epel-release-6-8.noarch.rpm
 ## RHEL/CentOS 6 64-Bit ##
-# wget http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-# rpm -ivh epel-release-6-8.noarch.rpm
+wget http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+rpm -ivh epel-release-6-8.noarch.rpm
 
 #+END_SRC
 
 装了以后发现，一样不管用，及时止损，不再尝试了，不过网络上有人写到安装成功，不过不是树莓派的，是PC的。
 
-/CentOS7 32位的安装epel，请死了这条心/ 不过本来32位也就被淘汰了，给自己个理由换电脑吧。
+/CentOS7 32位的安装epel，请死了这条心/不过本来32位也就被淘汰了，给自己个理由换电脑吧。
 
 
 * 安装配置Samba
@@ -84,20 +90,20 @@ CentOS Linux release 7.4.1708 (Core)
 
 先查看是否安装Samba
 
-#+BEGIN_SRC Sh
+#+BEGIN_SRC sh
 rpm -qa | grep samba
 yum list installed | grep samba
 #+END_SRC
 
 如果已经安装那么可以先卸载（这里的命令选用，如果觉得已经安装正确则无需卸载）
 
-#+BEGIN_SRC Sh
+#+BEGIN_SRC sh
 yum remove samba*
 #+END_SRC
 
 接着，连上网络，安装samba
 
-#+BEGIN_SRC Sh
+#+BEGIN_SRC sh
 yum install samba* -y
 #+END_SRC
 
@@ -107,7 +113,7 @@ yum install samba* -y
 
 打开win的cmd窗口，快捷键 win+r 然后输入 cmd 回车即可，并在窗口输入以下命令
 
-#+BEGIN_SRC Sh
+#+BEGIN_SRC sh
 net config workstation
 #+END_SRC
 
@@ -117,7 +123,7 @@ net config workstation
 
 - 创建共享目录
 
-#+BEGIN_SRC Sh
+#+BEGIN_SRC sh
 mkdir -p /samba/anonymous
 chmod -R 0777 /samba/anonymous
 chown -R nobody:nobody /samba/anonymous
@@ -125,7 +131,7 @@ chown -R nobody:nobody /samba/anonymous
 
 - 关掉防火墙和selinux
 
-#+BEGIN_SRC Sh
+#+BEGIN_SRC sh
 systemctl stop firewalld.service #停止firewall
 systemctl disable firewalld.service #禁止firewall开机启动
 
@@ -150,7 +156,7 @@ cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
 
 - 修改配置文件
 
-#+BEGIN_SRC python
+#+BEGIN_SRC sh
 vi /etc/samba/smb.conf
 
 # 可以把之前的内容注释掉，加入如下内容
@@ -171,7 +177,7 @@ vi /etc/samba/smb.conf
         browsable = yes    # 让所有的用户看到这个项目
         writable = yes    # 是否可以写入
         guest ok = yes    # 是否允许guest账户访问
-        read only = no    # 是否只读，与wirtable类似，谁在后面厅听谁的
+        read only = no    # 是否只读，与wirtable类似，谁在后面听谁的
 #+END_SRC
 
 /保存配置文件，并退出，到此一个完全共享的目录基本配置完毕/
