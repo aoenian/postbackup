@@ -4,6 +4,7 @@ date: 2016-08-08 13:06:38
 categories: Windows
 tags:
 - cmd
+- copy
 ---
 
 有时候需要在复制Windows的命令行中的一些内容，这个时候我们平时使用的CTRL+C命令就不适合了，因为在命令行里面的作用是直接中断。

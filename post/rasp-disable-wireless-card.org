@@ -1,12 +1,12 @@
 #+TITLE: 树莓派永久禁用无线网卡
 #+DATE: <2017-02-16 二>
-#+TAGS: Raspberry Pi, wireless card, vnc
+#+TAGS: wireless card, vnc
 #+LAYOUT: post
 #+CATEGORIES: Raspberry Pi
 
 之前树莓派一直用的无线网卡，不过更新系统，安装软件，传输文件都实在太慢了，所以我找了一根网线把树莓派连在路由器上面。这样感觉好多了还是有线稳定啊。因为基本不再用无线，所以就准备把无线网卡禁用掉。
 
-首先想到的就是在图形界面下面找到网络管理器，然后禁用。不过平时都是用的ssh连接的，没用过远程vnc，所以上网搜索了一下。把过程记录下来省得以后用的时候到处找。
+首先想到的就是在图形界面下面找到网络管理器，然后禁用。不过平时都是用的ssh连接的，没用过远程vnc，所以上网搜索了一下。把过程记录下来备用。
 
 #+BEGIN_HTML
 <!--more-->
@@ -29,7 +29,7 @@
 
 ** 永久禁用无线网卡
 
-搞定vnc以后一查看发现，网络控制管理里面没有禁用网卡的选项，不过也无所谓啦，就当复习了一下。不过问题还得解决。
+搞定vnc以后一查看发现，网络控制管理里面没有禁用网卡的选项。只能看看其他的办法。
 
 *这里说一下，网络上使用 =sudo ifconfig eth0 down= 这个命令也可以不过重启以后就失效了，当然也可以做一个开机启动的脚本，这是后话。*
 
@@ -41,7 +41,7 @@
 
 *** 执行 =lshw= 命令，查看无线驱动名称，并加入禁用名单
 
-执行命令以后查看 =network:0 description: Wireless interface= 在这个里面找到 =driver=brcmfmac= 那么那个 =brcmfmac= 就是驱动名称。
+执行命令以后查看 =network:0 description: Wireless interface= 在这个里面找到 =driver=brcmfmac= 那么这个 =brcmfmac= 就是驱动名称。
 
 记好你的机器显示的那个名称（我不确定大家是不是都一样），然后在文件 =/etc/modprobe.d/fbdev-blacklist.conf= 的末尾加入一行 =blacklist brcmfmac= ，保存退出。
 

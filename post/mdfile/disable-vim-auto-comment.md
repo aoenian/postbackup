@@ -1,8 +1,10 @@
 ---
 title: 禁止Vim换行自动添加注释符号
 date: 2016-10-08 16:19:19
-categories: Vim
-tags: auto comment
+categories: Editor
+tags: 
+- Vim
+- comment
 ---
 
 在用vim编写程序的时候换行后总会自动添加注释符号，所以就上网搜索如何去掉vim中换行后自动添加的注释符号。

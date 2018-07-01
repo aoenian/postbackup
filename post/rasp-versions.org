@@ -1,8 +1,8 @@
 #+TITLE: 查看树莓派版本
 #+DATE: <2018-05-20 Sun>
-#+TAGS: raspi, version
+#+TAGS: versions
 #+LAYOUT: post
-#+CATEGORIES: RaspberryPi
+#+CATEGORIES: Raspberry Pi
 
 安装软件的时候想查看树莓派系统是32位还是64位就出现了以下的操作
 
@@ -18,17 +18,6 @@ cat /etc/os-release		# OS版本资讯
 cat /etc/issue			# Linux distro 版本
 cat /etc/debian_version		# Debian版本编号
 #+END_SRC
-
-#+BEGIN_HTML
-<!--more-->
-#+END_HTML
-
-#+BEGIN_SRC python
-for i in range(1, 100):
-    print("hello")
-
-#+END_SRC
-
 
 /虽然树莓派3b的硬件支持64位的系统，但是官方的系统还是32位的，主要应该是为了兼容之前的硬件/
 

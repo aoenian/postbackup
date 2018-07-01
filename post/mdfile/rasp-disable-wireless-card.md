@@ -1,0 +1,58 @@
+---
+title: 树莓派永久禁用无线网卡
+date: 2017-02-16
+categories: Raspberry Pi
+tags:
+- wireless card
+- vnc
+---
+
+
+之前树莓派一直用的无线网卡，不过更新系统，安装软件，传输文件都实在太慢了，所以我找了一根网线把树莓派连在路由器上面。这样感觉好多了还是有线稳定啊。因为基本不再用无线，所以就准备把无线网卡禁用掉。
+
+首先想到的就是在图形界面下面找到网络管理器，然后禁用。不过平时都是用的ssh连接的，没用过远程vnc，所以上网搜索了一下。把过程记录下来备用。
+
+<!--more-->
+
+树莓派远程vnc连接
+-----------------
+
+### 在树莓派上安装tightvnc服务端
+
+终端执行命令： `sudo apt-get install tightvncserver`
+安装完成以后执行命令： `tightvncserver` 启动。在启动的过程中软件会让用户输入控制密码，为了安全还是设置一个，还有一个只能观看的密码这个看自己需要，我没有设置。
+
+然后在网络上面下载一个 `tightvnc`的客户端就可以了，官方网站[tightvnc](http://www.tightvnc.com/).
+mac用户可以使用 `realvnc`
+
+### vnc连接
+
+启动pc上面的tightvnc，在remote host里面输入： `你的树莓派的IP地址:1` 点击连接即可。
+
+*其实上面你输入的 `:1` 就是控制台号码，如果你留意的话，在tightvncserver启动的时候会出现一个 `:1`的提示，告诉你这是第几个控制台，当然你可以打开多个控制台。*
+
+永久禁用无线网卡
+----------------
+
+搞定vnc以后一查看发现，网络控制管理里面没有禁用网卡的选项。只能看看其他的办法。
+
+**这里说一下，网络上使用 `sudo ifconfig eth0 down` 这个命令也可以不过重启以后就失效了，当然也可以做一个开机启动的脚本，这是后话。**
+
+这里用的方法是通过配置文件禁用无线网卡驱动。
+
+### 安装 `lshw` 命令
+
+终端执行命令 `sudo apt-get install lshw`
+
+### 执行 `lshw` 命令，查看无线驱动名称，并加入禁用名单
+
+执行命令以后查看 `network:0 description: Wireless interface` 在这个里面找到 `driver=brcmfmac` 那么这个 `brcmfmac` 就是驱动名称。
+
+记好你的机器显示的那个名称（我不确定大家是不是都一样），然后在文件 `/etc/modprobe.d/fbdev-blacklist.conf` 的末尾加入一行 `blacklist brcmfmac` ，保存退出。
+
+*重启搞定，你会发现你的无线网络已经没有了。当然如果还想使用的话，把那一行代码删掉即可。*
+
+**参考链接：**
+
+-   <http://os.51cto.com/art/201108/284130.htm>
+-   <http://shumeipai.nxez.com/2013/09/04/login-rpi-with-vnc.html>

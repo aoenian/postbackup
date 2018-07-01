@@ -1,8 +1,8 @@
 #+TITLE: 思科路由器配置1——密码配置 
 #+DATE: <2017-03-12 周日>
-#+TAGS: router, password, ssh
+#+TAGS: router, password
 #+LAYOUT: post
-#+CATEGORIES: Router
+#+CATEGORIES: Net
 
 [[https://github.com/aoenian/cisco-pkt][配置好的pkt文件]]
 
@@ -80,7 +80,7 @@ R1841(config)#crypto key zeroize rsa 	// 删除ssh密钥禁止ssh登录
 
 使用pc连接路由器的f0/0接口，即可在命令行进行登录
 
-#+BEGIN_SRC 
+#+BEGIN_SRC sh
 // telnet 登录
 PC>telnet 192.168.1.1
 Trying 192.168.1.1 ...Open

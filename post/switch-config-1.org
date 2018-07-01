@@ -1,8 +1,8 @@
-#+TITLE: 思科模拟器交换机设置1——密码设置
+#+TITLE: 思科交换机配置1——密码设置
 #+DATE: <2017-03-04 六>
-#+TAGS: switch, ciscoPT 
+#+TAGS: switch, password 
 #+LAYOUT: post
-#+CATEGORIES: Switch
+#+CATEGORIES: Net
 
 *交换机的配置将会是一个系列文章，我会把自己配置过的例子都写出来做一个系列，也避免之后每次遇到都要去网络搜索。使用 packet tracer 的版本号为6.2(5.3版本会出现问题)，查看此文需要对思科模拟器有一定的了解。*
 
@@ -96,7 +96,7 @@ Switch(config)#enable secret cisco 	// 在全局模式下设置
 
 如果每次配置交换机都需要用配置线在交换机的配置口配置，那估计要疯掉了，所以我们需要配置远程登录。
 
-#+BEGIN_SRC java
+#+BEGIN_SRC C
 // 因为远程配置需要ip地址，所以需要给交换机配置管理ip
 Switch(config)#interface vlan 1		// 进入交换机的默认 1 号vlan
 Switch(config-if)#ip address 192.168.1.1 255.255.255.0 	// 设置管理IP

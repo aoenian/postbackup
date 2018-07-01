@@ -2,7 +2,7 @@
 #+DATE: <2017-10-29 Sun>
 #+TAGS: CentOS,Samba
 #+LAYOUT: post
-#+CATEGORIES: CentOS
+#+CATEGORIES: Linux
 
 
 * 前言
@@ -15,30 +15,13 @@
 
 那么需求来了，让CentOS读取ntfs，搜索一番，发现很简单就是安装一个ntfs-3g的软件的事情，不过就这么个问题废老大劲了。
 
-*2018-06-05更新：安装ntfs-3g可[[https://www.tuxera.com/community/open-source-ntfs-3g/][官网]]下载源码直接编译安装*
+*2018-06-05更新：32位安装ntfs-3g可[[https://www.tuxera.com/community/open-source-ntfs-3g/][官网]]下载源码直接编译安装，64位的可以直接安装[[https://fedoraproject.org/wiki/EPEL][EPEL]]然后再安装相应的软件*
 
 #+BEGIN_HTML
 <!--more-->
 #+END_HTML
 
-** 安装ntfs-3g
-
-首先需要安装epel，至于epel是个什么货色请看[[https://fedoraproject.org/wiki/EPEL/zh-cn][EPEL]]. /结果悲惨的失败了/
-
-- 网络安装
-
-本来CentOS7应该可以直接用命令安装 ~yum install epel-release~ ，但是就是没有这个软件包，我也纳闷了，还觉得写博客的这些都什么人，自己也不试试。换个方法呗，难不倒咱们。
-
-- 软件包安装
-
-#+BEGIN_SRC sh
-## RHEL/CentOS 7 64-Bit ##
-wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-10.noarch.rpm
-rpm -ivh epel-release-7-10.noarch.rpm
-
-#+END_SRC
-
-安装没报错，但是更新软件源的时候就出错了，搜了半天发现，可能CentOS7是32位版本的原因。
+当时查看系统的位数，找到的一些系统信息查看的方法，总结记录如下。
 
 - 查看CentOS的版本
 
@@ -63,28 +46,12 @@ CentOS Linux release 7.4.1708 (Core)
 
 #+END_SRC
 
-一看完了，树莓派的CentOS7是32位，而且从7开始官方不再支持32位的epel了。
 
-- 不能放弃，安装CentOS6的32位epel
-
-#+BEGIN_SRC sh
-## RHEL/CentOS 6 32-Bit ##
-wget http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
-rpm -ivh epel-release-6-8.noarch.rpm
-## RHEL/CentOS 6 64-Bit ##
-wget http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-rpm -ivh epel-release-6-8.noarch.rpm
-
-#+END_SRC
-
-装了以后发现，一样不管用，及时止损，不再尝试了，不过网络上有人写到安装成功，不过不是树莓派的，是PC的。
-
-/CentOS7 32位的安装epel，请死了这条心/不过本来32位也就被淘汰了，给自己个理由换电脑吧。
 
 
 * 安装配置Samba
 
-既然上面的路堵死了，那么就来只能共享吧。CentOS的共享比较麻烦具体下面介绍。
+CentOS的共享比较麻烦具体下面介绍
 
 ** 安装Samba
 
@@ -95,9 +62,10 @@ rpm -qa | grep samba
 yum list installed | grep samba
 #+END_SRC
 
-如果已经安装那么可以先卸载（这里的命令选用，如果觉得已经安装正确则无需卸载）
+如果已经安装那么可以跳过，如果没有正确安装可以先删除再重新安装
 
 #+BEGIN_SRC sh
+# 删除samba
 yum remove samba*
 #+END_SRC
 
@@ -146,11 +114,11 @@ SELINUX=disabled
 
 /如果防火墙不关闭，查看共享会出现连接失败；如果selinux不关闭，则无法看到共享目录的内容/
 
-/当然为了安全期间，可以对Samba的端口放行，设置selinux分享Samba的目录，大家可以参考博文/
+/当然为了安全期间，可以对Samba的端口放行，设置selinux分享Samba的目录，大家可以参考其他博文/
 
 - 备份配置文件
 
-#+BEGIN_SRC Sh
+#+BEGIN_SRC sh
 cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
 #+END_SRC
 
@@ -191,7 +159,7 @@ systemctl restart smb.service
 systemctl restart nmb.service
 #+END_SRC
 
-/配置完成，可查看共享目录和文件/
+/配置完成，可在其他系统查看共享目录和文件/
 
 
 

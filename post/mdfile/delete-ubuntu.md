@@ -3,7 +3,8 @@ title: 双系统删除Ubuntu（Win7+Ubuntu）
 date: 2016-08-10 18:57:50
 categories: Linux
 tags:
-- ubuntu
+- Ubuntu
+- Win7
 ---
 
 这个也是无奈之举，个人是很喜欢linux系统，不过ATI显卡确实不适合linux，本来机器就老了，散热也不行，加上显卡发热太大，开机不到一个小时就过热自动关机。所以没办法啦，只能删除Ubuntu。

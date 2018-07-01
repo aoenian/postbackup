@@ -1,6 +1,6 @@
-#+TITLE: MacOS/Linux/RPI 终端使用ss代理
+#+TITLE: MacOS/RPI 终端使用ss代理
 #+DATE: <2017-02-18 六>
-#+TAGS: ss, terminal, 树莓派, RPI
+#+TAGS: ss, terminal
 #+LAYOUT: post
 #+CATEGORIES: Raspberry Pi
 
@@ -22,7 +22,7 @@
 
 /注意：/etc 目录下面没有配置文件无所谓，在home下面找个地方随便建一个就可以/
 
-#+BEGIN_SRC bash
+#+BEGIN_SRC sh
 {
     "server":"your_server_ip",
     "server_port":8388,
@@ -41,25 +41,24 @@
 
 启动： =sslocal -c /etc/shadowsocks.json=
 
-停止直接 =ctrl-c=
-这里我没有选择后台运行主要是为了查看访问网站时候的出错信息
+停止直接快捷键 =ctrl-c= 这里我没有选择后台运行主要是为了查看访问网站时候的出错信息
 
 如果需要后台运行可以使用如下命令：
 
-#+BEGIN_SRC
-启动：sslocal -c /etc/shadowsocks.json -d start
-停止：sslocal -c /etc/shadowsocks.json -d stop
+#+BEGIN_SRC sh
+sslocal -c /etc/shadowsocks.json -d start    # 启动
+sslocal -c /etc/shadowsocks.json -d stop    # 停止
 #+END_SRC
 
 ** 使用终端代理
 
 这里主要是由于ss使用的socks5协议终端不支持，所以需要使用协议转换工具。
 
-这里原文的 =polipo= 我这里没有成功，所以使用另一个软件 =proxychains=
+原文的 =polipo= 我这里没有配置成功，所以使用另一个软件 =proxychains=
 
 - 安装proxychains
 
-#+BEGIN_SRC bash
+#+BEGIN_SRC sh
 # Debian/Ubuntu:
 apt-get install proxychains
 # Mac OS X:
@@ -70,7 +69,7 @@ brew install proxychains-ng
 
 编辑 =~/.proxychains/proxychains.conf= 如果没有直接建一个
 
-#+BEGIN_SRC bash
+#+BEGIN_SRC sh
 strict_chain
 proxy_dns 
 remote_dns_subnet 224

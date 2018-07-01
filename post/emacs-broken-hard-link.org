@@ -1,10 +1,10 @@
 #+TITLE: 如何避免Emacs破坏文件的硬链接
 #+DATE: <2017-04-19 Wed>
-#+TAGS: emacs, hard link, broken
+#+TAGS: Emacs, hard link
 #+LAYOUT: post
-#+CATEGORIES: Emacs
+#+CATEGORIES: Editor
 
-使用了markdown以后感觉不错，能够全心放在写作内容上面，不过用了一段时间以后开始发愁编辑器的问题，在网络搜索的过程中进入了org-mode的坑，配上emacs，用着很爽，也不会发愁注册啦，版权之类的问题。所以就开始使用org-mode记录。
+使用了markdown以后感觉不错，能够全心放在写作内容上面，不过用了一段时间以后开始发愁编辑器的问题，在网络搜索的过程中进入了org-mode的坑，配上emacs，用着很爽，也不会发愁注册啦，版权之类的问题。所以就开始使用org-mode进行文字记录。
 
 问题的出现是在写博客的过程中，在blog目录下写完一篇文章后我会把文件硬链接到post目录下，这样呢如果文章预览解析有问题需要更改，那么留在blog目录下的文章也会随之改变，保证两边的文章是一样的。
 #+BEGIN_HTML

@@ -1,8 +1,10 @@
 ---
 title: 解决Win10安装Office 2013出现Error 2203错误
 date: 2016-08-19 17:08:26
-categories: Office
-tags: error 2203
+categories: Windows
+tags:
+- office2013
+- error 2203
 ---
 
 由于不是办公电脑，所以之前一直用的是LibreOffice，金山的WPS也用过，因为广告比较多家人容易误点所以卸载了。Libreoffice的界面虽然没有微软的好看，不过功能一点都不少，而且兼容性作为普通的浏览是没有问题的，促使我更换的原因是启动太慢的问题。

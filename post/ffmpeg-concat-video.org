@@ -1,14 +1,13 @@
-#+TITLE: ffmpeg剪切连接音视频
+#+TITLE: FFmpeg剪切连接音视频
 #+DATE: <2018-05-26 Sat>
-#+TAGS: ffmpeg, concat, split, video
+#+TAGS: concat video
 #+LAYOUT: post
 #+CATEGORIES: FFmpeg
 
-这几天需要处理一下视频，开始以为只是简单的剪切和连接，没想到耗费了很多时间，现在把使用的方法总结出来，以后就不用重复寻找。
+这几天需要处理一下视频，开始以为就是简单的剪切和连接，没想到耗费了很多时间，现在把使用过的方法总结出来，以后就不用重复寻找。
 
-* FFmpeg
 
-** 音频
+* 音频
 
 平时用音频操作基本就是剪切制作手机铃声，所以就只记录剪切的方法
 
@@ -18,9 +17,9 @@
 <!--more-->
 #+END_HTML
 
-** 视频
+* 视频
 
-*剪切*
+** 剪切
 
 =ffmpeg -i input.mp4 -ss STARTTIME -t STOPTIME -acodec copy -vcodec copy output.mp4=
 
@@ -30,7 +29,7 @@
 
 如果需要对视频编辑，建议使用软件，这里推荐 [[https://www.shotcut.org/][Shotcut]] ，或者从 [[https://zhuanlan.zhihu.com/p/21879714][这里]] 找找适合的。
 
-*连接*
+** 连接
 
 连接比较复杂，这里分情况介绍。
 
@@ -50,7 +49,7 @@
   ffmpeg -i "concat:input1.mp4|input2.mp4|input3.mp4" -c copy output.mp4
   #+END_SRC
 
-2. 视频虽然格式相同，如都是MP4，但是码率，宽高都不相同，这就比较麻烦，还没有好的解决方法，以下仅供参考 /如果大家有解决方案，请麻烦告诉一下/
+2. 视频虽然格式相同，如都是MP4，但是码率，宽高都不相同，这就比较麻烦，还没有好的解决方法，以下仅供参考 *如果大家有解决方案，请麻烦告诉一下*
 
   在网络上搜索的这种情况，基本思路就是把视频转换到临时格式，合并后再转换回源格式
 
@@ -61,7 +60,7 @@
   ffmpeg -i "concat:intermediate1.ts|intermediate2.ts" -c copy -bsf:a aac_adtstoasc output.mp4
   #+END_SRC
   /这种方法可以完成视频的连接，画面没有问题，但是视频的声音会丢失/
-  
+
   - 使用mpg格式过渡 [[https://stackoverflow.com/a/7333453][原文]]
   #+BEGIN_SRC sh
   ffmpeg -i 1.mp4 -qscale 0 1.mpg
@@ -69,7 +68,7 @@
   cat 1.mpg 2.mpg | ffmpeg -f mpeg -i - -qscale 0 -vcodec mpeg4 output.mp4
   #+END_SRC
   /视频可以连接，声音还在，不过视频会压缩为一样的宽高/
-  
+
   - 最后是我已经实验过的几种转换方法和连接方法，不过都失败了
   =ffmpeg -i 2.mp4 -f lavfi -i anullsrc -c:v copy -c:a aac -shortest 2.ts= 
   [[https://superuser.com/a/1029552][原文]] 这个命令转换的 =ts= 文件连接后部分视频会有声音，不过部分会丢失，我查看了转换后的 =ts= 文件，发现有的转换为 =ts= 文件后声音就没有了。
@@ -79,4 +78,4 @@
 
   =ffmpeg -i infilename -f mpegts -vcodec copy -acodec copy outfile.ts= 
   [[https://superuser.com/q/227036][原文]] 这种方式转换后的 =ts= 文件有声音，不过连接后还是不行。
-  
+
