@@ -31,7 +31,7 @@ tags:
 
 | 系统    | hosts文件位置 |
 |---------|---------------|
-| Windows | C:32          |
+| Windows |  C:\Windows\System32\drivers\etc\hosts|
 | Linux   | /etc/hosts    |
 | MacOS   | /etc/hosts    |
 
